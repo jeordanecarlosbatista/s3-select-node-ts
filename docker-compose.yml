@@ -1,0 +1,25 @@
+version: "3.1"
+
+services:
+  localstack:
+    image: localstack/localstack:1.1.0
+    container_name: poc-s3-select-localstack
+    network_mode: bridge
+    ports:
+      - "4566-4597:4566-4597"
+    environment:
+      - SERVICES=s3
+      - AWS_DEFAULT_REGION=us-east-1
+      - NODE_TLS_REJECT_UNAUTHORIZED=0
+      - DEBUG=1
+      - LAMBDA_EXECUTOR=docker-reuse
+      - HOSTNAME=localhost
+      - HOSTNAME_EXTERNAL=localhost
+      - HOSTNAME_FROM_LAMBDA=localhost
+      - USE_LEGACY_PORTS=false
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - AWS_ACCESS_KEY_ID=local
+      - AWS_SECRET_ACCESS_KEY=local
+    volumes:
+      - "${TMPDIR:-/tmp/localstack}:/tmp/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
